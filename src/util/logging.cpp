@@ -1,4 +1,4 @@
-#include <log.h>
+#include <logging.h>
 #include <boost/log/trivial.hpp>
 
 void zge::core::Log(const std::string& log_msg, LogSeverity severity) {

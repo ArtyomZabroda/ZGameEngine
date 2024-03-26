@@ -28,27 +28,28 @@ zge::core::Window::Window(int width, int height)
 
   gl_context_ = SDL_GL_CreateContext(sdl_window_ptr_.get());
   if (gl_context_ == nullptr) {
-    throw std::runtime_error(std::format(
-        "OpenGL Context could not be created! SDL_Error: %s\n", SDL_GetError()));
+    throw std::runtime_error(
+        std::format("OpenGL Context could not be created! SDL_Error: %s\n",
+                    SDL_GetError()));
   }
-  SDL_GL_SetSwapInterval(1);
 
-  renderer_.emplace(reinterpret_cast<void*>(SDL_GL_GetProcAddress));
+  int w, h;
+  SDL_GetWindowSize(sdl_window_ptr_.get(), &w, &h);
+  renderer_.emplace(reinterpret_cast<void*>(SDL_GL_GetProcAddress), w, h);
 }
 
-zge::core::Window::~Window()
-{
+zge::core::Window::~Window() {
   SDL_GL_DeleteContext(gl_context_);
   SDL_Quit();
 }
-
 
 int zge::core::Window::Run() {
   SDL_Event e;
   bool quit = false;
   while (quit == false) {
     while (SDL_PollEvent(&e)) {
-      if (e.type == SDL_QUIT) quit = true;
+      if (e.type == SDL_QUIT)
+        quit = true;
     }
     renderer_->Render();
   }
