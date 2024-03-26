@@ -10,8 +10,6 @@ target_link_libraries(zgameengine
          $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
          zge_rendering
          zge_util
-         OpenGL::OpenGL
-         OpenGL::GLX
-         OpenGL::EGL
+         OpenGL::GL
      )
 

@@ -7,7 +7,7 @@
 zge::core::Window::Window(int width, int height)
     : sdl_window_ptr_(nullptr, SDL_DestroyWindow) {
   //Initialize SDL
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+  if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
     throw std::runtime_error(std::format(
         "SDL could not initialize! SDL_Error: {}\n", SDL_GetError()));
   }
@@ -33,9 +33,11 @@ zge::core::Window::Window(int width, int height)
                     SDL_GetError()));
   }
 
+   SDL_GL_MakeCurrent(sdl_window_ptr_.get(), gl_context_);
+
   int w, h;
   SDL_GetWindowSize(sdl_window_ptr_.get(), &w, &h);
-  renderer_.emplace(reinterpret_cast<void*>(SDL_GL_GetProcAddress), w, h);
+  renderer_.emplace(SDL_GL_GetProcAddress, w, h);
 }
 
 zge::core::Window::~Window() {
@@ -52,6 +54,7 @@ int zge::core::Window::Run() {
         quit = true;
     }
     renderer_->Render();
+    SDL_GL_SwapWindow(sdl_window_ptr_.get());
   }
   return 0;
 }

@@ -1,11 +1,14 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <SDL.h>
+#include <functional>
+
 namespace zge::rendering {
 
 class Renderer {
  public:
-  Renderer(void* load_proc, int width, int height);
+  Renderer(void* (*load_proc)(const char*), int width, int height);
   void Render();
 };
 

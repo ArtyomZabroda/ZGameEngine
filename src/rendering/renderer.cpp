@@ -4,7 +4,8 @@
 #include <format>
 #include <stdexcept>
 
-zge::rendering::Renderer::Renderer(void* load_proc, int width, int height) {
+zge::rendering::Renderer::Renderer(void* (*load_proc)(const char*), int width,
+                                   int height) {
   zge::core::Log("Starting renderer");
   if (!gladLoadGLLoader((GLADloadproc)load_proc)) {
     throw std::runtime_error("Failed to initialize GLAD");
@@ -21,6 +22,6 @@ zge::rendering::Renderer::Renderer(void* load_proc, int width, int height) {
 }
 
 void zge::rendering::Renderer::Render() {
-  glClearColor(0.0, 1.0, 0.0, 1.0);
+  glClearColor(1.0, 1.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT);
 }
